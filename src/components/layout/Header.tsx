@@ -20,30 +20,7 @@ const HeaderSection = () => {
       >
         <MenuSection />
       </Header>
-      <Header
-        style={{
-          display: "flex",
-          color: "#ffffff",
-          alignItems: "center",
-          backgroundColor: "#5EB06C",
-          boxShadow: "0 2px 3px 1px #e2e3e2",
-        }}
-      >
-        <div className="categories">
-          <div className="item hover:bg-white hover:text-primary cursor-pointer">
-            <button>Category 1</button>
-          </div>
-          <div className="item hover:bg-white hover:text-primary cursor-pointer">
-            <button>Category 1</button>
-          </div>
-          <div className="item hover:bg-white hover:text-primary cursor-pointer">
-            <button>Category 1</button>
-          </div>
-          <div className="item hover:bg-white hover:text-primary cursor-pointer">
-            <button>Category 1</button>
-          </div>
-        </div>
-      </Header>
+      
     </>
   );
 };

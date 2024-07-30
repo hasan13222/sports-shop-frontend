@@ -1,9 +1,13 @@
 import { IoFootballOutline } from "react-icons/io5";
 import { FaShopify } from "react-icons/fa";
+import { menuItems } from "../../constants/menuItems";
+import { NavLink } from "react-router-dom";
+import { useAppSelector } from "../../redux/hooks";
 const MenuSection = () => {
+  const {cartItems} = useAppSelector(state => state.cart)
   return (
     <>
-      <div className="navbar bg-bgColor p-0 h-full">
+      <div className="navbar bg-bgColor p-0 h-full border-b border-white">
         <div className="navbar-start">
           <div className="dropdown">
             <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
@@ -26,23 +30,11 @@ const MenuSection = () => {
               tabIndex={0}
               className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[300] mt-3 w-52 p-2 shadow"
             >
-              <li>
-                <a className="hover:bg-primary hover:text-white text-txtColor">Item 1</a>
-              </li>
-              <li>
-                <a>Parent</a>
-                <ul className="p-2">
-                  <li>
-                    <a>Submenu 1</a>
-                  </li>
-                  <li>
-                    <a>Submenu 2</a>
-                  </li>
-                </ul>
-              </li>
-              <li>
-                <a>Item 3</a>
-              </li>
+              {menuItems.map((item) => (
+                <li key={item.title}>
+                  <NavLink to={`${item.path}`}>{item.title}</NavLink>
+                </li>
+              ))}
             </ul>
           </div>
           <a className="pt-5 hover:text-accentColor" href="/">
@@ -56,40 +48,21 @@ const MenuSection = () => {
         </div>
         <div className="navbar-center hidden lg:flex">
           <ul className="menu menu-horizontal px-1">
-            <li>
-              <a className="hover:bg-primary hover:text-white text-txtColor">Products</a>
-            </li>
-            <li>
-              <a className="hover:bg-primary hover:text-white text-txtColor">Manage Products</a>
-            </li>
-            <li>
-              <a className="hover:bg-primary hover:text-white text-txtColor">About Us</a>
-            </li>
-            {/* <li>
-              <details>
-                <summary>Parent</summary>
-                <ul className="p-2">
-                  <li>
-                    <a className="hover:bg-primary hover:text-white text-txtColor">Submenu 1</a>
-                  </li>
-                  <li>
-                    <a className="hover:bg-primary hover:text-white text-txtColor">Submenu 2</a>
-                  </li>
-                </ul>
-              </details>
-            </li> */}
-
-            <li>
-              <a className="hover:bg-primary hover:text-white text-txtColor">Contact Us</a>
-            </li>
+            {menuItems.map((item) => (
+              <li key={item.title}>
+                <NavLink to={`${item.path}`}>{item.title}</NavLink>
+              </li>
+            ))}
           </ul>
         </div>
-          <div className="navbar-end">
-            <a className="btn bg-transparent border-none shadow-none relative hover:bg-transparent">
-                <FaShopify className="font-bold text-4xl text-primary"/>
-                <small className="text-xs bg-txtColor text-white w-4 h-4 rounded-full absolute top-1 right-3">1</small>
-            </a>
-          </div>
+        <div className="navbar-end">
+          <a href="/cart" className="btn bg-transparent border-none shadow-none relative hover:bg-transparent">
+            <FaShopify className="font-bold text-4xl text-primary" />
+            <small className="text-xs bg-txtColor text-white w-4 h-4 rounded-full absolute top-1 right-3">
+              {cartItems?.length || 0}
+            </small>
+          </a>
+        </div>
       </div>
     </>
   );

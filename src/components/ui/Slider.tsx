@@ -26,9 +26,9 @@ const Slider = () => {
     .then(data => setSliderItems(data))
   }, [])
   return (
-    <Carousel afterChange={onChange}>
+    <Carousel autoplay autoplaySpeed={5000} afterChange={onChange}>
         {sliderItems?.map(item => (
-            <div className='w-full max-h-[400px] overflow-hidden'>
+            <div className='w-full max-h-[500px] overflow-hidden'>
                 <img className='w-full h-full object-cover' src={`/sliderImgs/${item?.image}`} alt="slider thumbnail" />
             </div>
         ))}
