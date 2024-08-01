@@ -5,9 +5,13 @@ import { setFilterValues } from "../../redux/features/product/productQuerySlice"
 import { setFilterModalOpen } from "../../redux/features/product/productSlice";
 
 const FilterForm = () => {
+  // react hook form options
   const { register, handleSubmit } = useForm<TFilterItem>();
+
+  // redux dispatch
   const dispatch = useAppDispatch();
 
+  // filter options type
   interface TFilterItem {
     category: string;
     brand: string;
@@ -16,8 +20,11 @@ const FilterForm = () => {
     minRating: number;
   }
 
+  // filter handler
   const onSubmit: SubmitHandler<TFilterItem> = async (data) => {
     const maxPrice = Number(data.maxPrice) ? Number(data.maxPrice) : Number.POSITIVE_INFINITY;
+
+    // update filter options state to trigger get product query with filter
     dispatch(setFilterValues({
       category: data.category,
       brand: data.brand,
@@ -26,16 +33,17 @@ const FilterForm = () => {
       minRating: Number(data.minRating)
     }));
 
+    // close filter modal
     dispatch(setFilterModalOpen(false))
   };
   return (
     <>
+    {/* filter form */}
       <form className="flex flex-col gap-3" onSubmit={handleSubmit(onSubmit)}>
         <div className="flex flex-col">
           <label>Brand</label>
           <input
             className="py-2 border rounded-md px-2"
-            // defaultValue={!isSPE ? data?.data?.brand : ""}
             {...register("brand", { required: false })}
           />
         </div>
@@ -43,7 +51,6 @@ const FilterForm = () => {
           <label>Category</label>
           <select
             className="py-2 border rounded-md px-2"
-            // defaultValue={!isSPE ? data?.data?.category : ""}
             {...register("category", { required: false })}
           >
             {categories.map((category, i) => (

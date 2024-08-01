@@ -12,7 +12,10 @@ import { AiFillDelete } from "react-icons/ai";
 import { useNavigate } from "react-router-dom";
 
 const Cart = () => {
+  // redux cart state
   const { cartItems, cartItemIds } = useAppSelector((state) => state.cart);
+
+  // get products query those are in cart
   const {
     data: cartProducts,
     isError,
@@ -23,6 +26,7 @@ const Cart = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+  // cart item quantity increment handler
   const increaseCartHandler = (productId: string) => {
     const increasedQtyItems = cartItems.map((item: TCartItem) =>
       item.id === productId ? { ...item, qty: item.qty + 1 } : item
@@ -30,6 +34,8 @@ const Cart = () => {
     localStorage.setItem("cartItems", JSON.stringify(increasedQtyItems));
     dispatch(setCart(increasedQtyItems));
   };
+
+  // cart item quantity decrement handler
   const decreaseCartHandler = (productId: string) => {
     const decreasedQtyItems = cartItems.map((item: TCartItem) => {
       if (item.id === productId) {
@@ -45,6 +51,8 @@ const Cart = () => {
     localStorage.setItem("cartItems", JSON.stringify(decreasedQtyItems));
     dispatch(setCart(decreasedQtyItems));
   };
+
+  // remove cart item handler
   const removeCartHandler = (id: string) => {
     const FilterCartItems = cartItems.filter(
       (item: TCartItem) => item.id !== id
@@ -54,11 +62,13 @@ const Cart = () => {
     dispatch(setCart(FilterCartItems));
   };
 
+  // calculate subtotal for items added to cart
   const subtotal = cartProducts?.data?.reduce((acc: number, item: TProduct) => {
     const itemIndex = cartItemIds.indexOf(item._id);
     return acc + item.price * cartItems[itemIndex]?.qty;
   }, 0);
 
+  // while changing quantity, check item is stock out or not
   const isAnyCartItemStockOut = cartProducts?.data?.find((item: TProduct) => {
     const itemIndex = cartItemIds.indexOf(item._id);
     return item.stock < cartItems[itemIndex]?.qty;

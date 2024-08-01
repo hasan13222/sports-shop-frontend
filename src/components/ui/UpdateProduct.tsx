@@ -6,13 +6,21 @@ import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { setFormMode, setmodalOpen, setProductId, setProductPicture } from "../../redux/features/product/productSlice";
 
 const UpdateProduct = ({ id }: { id: string }) => {
+  // redux dispatch
   const dispatch = useAppDispatch();
+
+  // redux product state
   const { productId } = useAppSelector(
     (state) => state.product
   );
+
+  // rtk single product fetch
   const { data, refetch } = useGetSingleProductQuery(productId);
+
+  // rtk delete product
   const [deleteProduct, { isError, error }] = useDeleteProductMutation();
 
+  // update product state handler before query
   const handleUpdate = (id: string) => {
     dispatch(setFormMode("update"))
     dispatch(setmodalOpen(true))
@@ -20,6 +28,8 @@ const UpdateProduct = ({ id }: { id: string }) => {
     refetch();
     dispatch(setProductPicture(data?.data?.image));
   };
+
+  // product delete query
   const handleDelete = async (id: string) => {
     const res = await deleteProduct(id);
 
@@ -36,6 +46,7 @@ const UpdateProduct = ({ id }: { id: string }) => {
   };
 
   return (
+    // action buttons in product list to manage product
     <Space size="middle">
       <button
         onClick={() => handleUpdate(id)}

@@ -2,6 +2,7 @@ import type { TableProps } from "antd";
 import { TProductManage } from "../types/productType";
 import UpdateProduct from "../components/ui/UpdateProduct";
 
+// manage product table
 export const columns: TableProps<TProductManage>["columns"] = [
   {
     title: "Product Name",

@@ -89,6 +89,7 @@ const Products = () => {
     <>
       <div className="products container mx-auto px-3 py-8">
         <h2 className="font-bold text-3xl mb-5">Our Products</h2>
+        {/* search filter row */}
         <div className="search_filter flex items-center gap-4 mb-4">
           <button
             onClick={showFilterModal}
@@ -126,12 +127,15 @@ const Products = () => {
             <button onClick={sortHandler} className="btn btn-accent text-white">Sort <RiArrowUpDownLine/></button>
           </div>
         </div>
+
         {isFetching && (
           <Spin tip="Loading" size="large">
             {content}
           </Spin>
         )}
         {isError && <p>{(error as CustomError)?.data?.message}</p>}
+        
+        {/* products */}
         <div className="all_products grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-7">
           {data?.data?.result?.map((product: TProduct) => (
             <>

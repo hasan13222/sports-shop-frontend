@@ -7,6 +7,7 @@ const Product = ({ item }: { item: TProduct }) => {
   const navigate = useNavigate();
   return (
     <>
+    {/* product card */}
       <div className="card w-full shadow-xl">
         <figure className="px-5 pt-5">
           <img

@@ -5,32 +5,41 @@ import { useGetProductsQuery } from "../../redux/features/product/productApi";
 import { content } from "../../components/ui/Loading";
 import ProductForm from "../../components/form/ProductForm";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import { setFormMode, setmodalOpen, setProductId, setProductPicture } from "../../redux/features/product/productSlice";
+import {
+  setFormMode,
+  setmodalOpen,
+  setProductId,
+  setProductPicture,
+} from "../../redux/features/product/productSlice";
 import { CustomError } from "../../types/baseQueryApi";
 
 const ManageProducts = () => {
   const { modalOpen, loading } = useAppSelector((state) => state.product);
   const dispatch = useAppDispatch();
 
+  // add product state update before query
   const showModal = () => {
     dispatch(setmodalOpen(true));
     dispatch(setFormMode("add"));
-    dispatch(setProductId(""))
-    dispatch(setProductPicture(""))
+    dispatch(setProductId(""));
+    dispatch(setProductPicture(""));
   };
 
+  // close product form modal
   const handleCancel = () => {
     dispatch(setmodalOpen(false));
   };
 
+  // get all products
   const {
     data: products,
     isError,
     error,
     isFetching,
     isLoading,
-  }: Record<string, any> = useGetProductsQuery({limit: Number.POSITIVE_INFINITY});
-
+  }: Record<string, any> = useGetProductsQuery({
+    limit: Number.POSITIVE_INFINITY,
+  });
 
   return (
     <>
@@ -44,6 +53,7 @@ const ManageProducts = () => {
         {isError && <p>{(error as CustomError)?.data?.message}</p>}
       </div>
       <div className="manage_products container mx-auto px-3 py-8">
+        {/* add product button */}
         <ConfigProvider
           theme={{
             token: {
@@ -74,6 +84,7 @@ const ManageProducts = () => {
           <ProductForm />
         </Modal>
 
+        {/* products table */}
         <Table
           columns={columns}
           dataSource={products?.data?.result}

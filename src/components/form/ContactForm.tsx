@@ -1,12 +1,14 @@
 import { useForm } from "react-hook-form";
 
 const ContactForm = () => {
+  // react hook form options
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
 
+  // getting client contact message
   const onSubmit = async (data:any) => {
     console.log(data);
   };

@@ -7,6 +7,7 @@ const MenuSection = () => {
   const {cartItems} = useAppSelector(state => state.cart)
   return (
     <>
+    {/* menu */}
       <div className="navbar bg-bgColor p-0 h-full border-b border-white">
         <div className="navbar-start">
           <div className="dropdown">
@@ -30,6 +31,7 @@ const MenuSection = () => {
               tabIndex={0}
               className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[300] mt-3 w-52 p-2 shadow"
             >
+              {/* mobile menu */}
               {menuItems.map((item) => (
                 <li key={item.title}>
                   <NavLink to={`${item.path}`}>{item.title}</NavLink>
@@ -48,6 +50,7 @@ const MenuSection = () => {
         </div>
         <div className="navbar-center hidden lg:flex">
           <ul className="menu menu-horizontal px-1">
+            {/* desktop menu */}
             {menuItems.map((item) => (
               <li key={item.title}>
                 <NavLink to={`${item.path}`}>{item.title}</NavLink>
@@ -56,6 +59,7 @@ const MenuSection = () => {
           </ul>
         </div>
         <div className="navbar-end">
+          {/* cart menu */}
           <a href="/cart" className="btn bg-transparent border-none shadow-none relative hover:bg-transparent">
             <FaShopify className="font-bold text-4xl text-primary" />
             <small className="text-xs bg-txtColor text-white w-4 h-4 rounded-full absolute top-1 right-3">

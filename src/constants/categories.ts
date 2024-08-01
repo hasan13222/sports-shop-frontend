@@ -1,3 +1,4 @@
+// product categories
 export const categories = [
   "Sportswear",
   "Protective Gear",

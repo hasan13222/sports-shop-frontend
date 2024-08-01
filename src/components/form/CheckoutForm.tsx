@@ -16,22 +16,32 @@ import { content } from "../ui/Loading";
 import { useNavigate } from "react-router-dom";
 
 const CheckoutForm = () => {
+  // getting cartItems and single product id from redux
   const { cartItems, singleProductId } = useAppSelector((state) => state.cart);
+
+  // fetching single product data
   const {
     data: SingleProduct,
     refetch,
     isError,
   } = useGetSingleProductQuery(singleProductId);
+
+  // update product query from rtk
   const [updateProduct, { isError: isUpdateError, isLoading, error }] =
     useUpdateProductMutation();
+
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+
+  // reack hook form options
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
 
+
+  // update product error handling
   if (isUpdateError) {
     console.log(error);
     toast.error((error as CustomError).data.message, {
@@ -40,6 +50,7 @@ const CheckoutForm = () => {
     });
   }
 
+  // checkout functionality
   const onSubmit = async (data: any) => {
     console.log(data);
     placeOrder();
@@ -48,13 +59,18 @@ const CheckoutForm = () => {
   const placeOrder = () => {
     let res: any;
     let n: number = 0;
+
+    // for every cart item trigger update product request to database
     cartItems.forEach(async (cartItem: TCartItem) => {
+      // fetching each product data one by one through rtk
       dispatch(setSingleProductId(cartItem.id));
 
-      const formdata = new FormData();
+      // if single product data fetch failed try again
       if (!SingleProduct) {
         refetch();
       }
+
+      // if any error show error message
       if (isError) {
         console.log(error);
         toast.error((error as CustomError).data.message, {
@@ -62,13 +78,11 @@ const CheckoutForm = () => {
           position: "top-right",
         });
       }
-      formdata.append(
-        "data",
-        JSON.stringify({ stock: SingleProduct?.data?.stock - cartItem.qty })
-      );
 
-      res = await updateProduct({ productId: cartItem.id, formdata });
+      // update product functionality
+      res = await updateProduct({ productId: cartItem.id, data: { stock: SingleProduct?.data?.stock - cartItem.qty } });
 
+      // if product update is successful, show success message
       if (res?.data?.success) {
         n++;
         if (cartItems.length === n) {
@@ -90,10 +104,13 @@ const CheckoutForm = () => {
           {content}
         </Spin>
       )}
+      
+      {/* checkout form */}
       <form
         className="flex flex-col gap-3 max-w-[400px]"
         onSubmit={handleSubmit(onSubmit)}
       >
+        {/* billing details */}
         <h3 className="font-semibold text-lg">Billing Details</h3>
         <div className="flex flex-col">
           <label>Full Name</label>
@@ -147,6 +164,7 @@ const CheckoutForm = () => {
           </p>
         </div>
 
+        {/* payment details */}
         <h3 className="font-semibold text-lg">Payment Details</h3>
         <div className="flex gap-2">
           <input

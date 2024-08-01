@@ -18,19 +18,29 @@ import { categories } from "../../constants/categories";
 import axios from "axios";
 
 export default function ProductForm() {
+  // redux product state
   const { formMode, productPicture, productId } = useAppSelector(
     (state) => state.product
   );
+
+  // ref to handle image file
   const productFileRef = useRef<HTMLInputElement>(null);
 
+  // single product fetch
   const { data } = useGetSingleProductQuery(productId);
 
+  // add product query
   const [addProduct, { isError, error }] = useAddProductMutation();
   console.log(error);
+
+  // update product query
   const [updateProduct, { isError: isUpdateError, error: UpdateError }] =
     useUpdateProductMutation();
+
+    // redux dispatch
   const dispatch = useAppDispatch();
 
+  // populate product data when update
   const name = data?.data?.name || "";
   const brand = data?.data?.brand || "";
   const description = data?.data?.description || "";
@@ -39,6 +49,7 @@ export default function ProductForm() {
   const price = data?.data?.price || "";
   const rating = data?.data?.rating || "";
 
+  // usememo to toggle form data when updating and adding product
   const defaultValues = useMemo(() => {
     if (formMode === "add") {
       return {};
@@ -47,6 +58,7 @@ export default function ProductForm() {
     }
   }, [name, brand, description, price, rating, category, stock, formMode]);
 
+  // react hook form options
   const {
     register,
     handleSubmit,
@@ -54,14 +66,16 @@ export default function ProductForm() {
     reset,
   } = useForm<TProductInput>({ defaultValues });
 
+  // image upload in imgbb
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files instanceof FileList) {
       const custImg = e.target.files[0];
       const data = { image: custImg };
 
+      // imgbb api key
       axios
         .post(
-          "https://api.imgbb.com/1/upload?key=787a92272c8fe84458fd69331f72c734",
+          `https://api.imgbb.com/1/upload?key=${process.env.REACT_APP_ImgBBapiKey}`,
           data,
           {
             headers: { "content-Type": "multipart/form-data" },
@@ -74,7 +88,9 @@ export default function ProductForm() {
   };
 
   const onSubmit: SubmitHandler<TProductInput> = async (data) => {
+    // loading true until add or update product finished
     dispatch(setLoading(true));
+
     data.stock = Number(data.stock);
     data.rating = 4;
     data.price = Number(data.price);
@@ -91,6 +107,7 @@ export default function ProductForm() {
 
     let res;
 
+    // toggle add and update
     if (formMode === "add") {
       res = await addProduct(data);
       setProductPicture("")
@@ -100,6 +117,7 @@ export default function ProductForm() {
       res = await updateProduct({ productId, data });
     }
 
+    // success message after add or update
     if (res?.data?.success) {
       dispatch(setLoading(false));
       dispatch(setmodalOpen(false));
@@ -109,6 +127,7 @@ export default function ProductForm() {
       });
     }
 
+    // add product error handler
     if (isError) {
       dispatch(setmodalOpen(false));
       toast.error((error as CustomError).data.message, {
@@ -116,6 +135,8 @@ export default function ProductForm() {
         position: "top-right",
       });
     }
+
+    // update product error handler
     if (isUpdateError) {
       console.log(UpdateError);
       dispatch(setmodalOpen(false));
@@ -126,6 +147,7 @@ export default function ProductForm() {
     }
   };
 
+  // reset form data when form works as add product form
   useEffect(() => {
     reset(defaultValues);
     if (formMode === "add") {
@@ -134,12 +156,12 @@ export default function ProductForm() {
   }, [data?.data?.image, reset, defaultValues, formMode]);
 
   return (
+    // product add and update form
     <form className="flex flex-col gap-3" onSubmit={handleSubmit(onSubmit)}>
       <div className="flex flex-col">
         <label>Product Name</label>
         <input
           className="py-2 border rounded-md px-2"
-          // defaultValue={!isSPE ? data?.data?.name : ""}
           {...register("name", { required: formMode === "add" })}
         />
         <p className="text-red-500">
@@ -150,7 +172,6 @@ export default function ProductForm() {
         <label>Brand</label>
         <input
           className="py-2 border rounded-md px-2"
-          // defaultValue={!isSPE ? data?.data?.brand : ""}
           {...register("brand", { required: formMode === "add" })}
         />
         <p className="text-red-500">
@@ -161,7 +182,6 @@ export default function ProductForm() {
         <label>Category</label>
         <select
           className="py-2 border rounded-md px-2"
-          // defaultValue={!isSPE ? data?.data?.category : ""}
           {...register("category", { required: formMode === "add" })}
         >
           {categories.map((category, i) => (
@@ -178,7 +198,6 @@ export default function ProductForm() {
         <label>Descritption</label>
         <input
           className="py-2 border rounded-md px-2"
-          // defaultValue={!isSPE ? data?.data?.description : ""}
           {...register("description", { required: formMode === "add" })}
         />
         <p className="text-red-500">
@@ -190,7 +209,6 @@ export default function ProductForm() {
         <input
           type="number"
           className="py-2 border rounded-md px-2"
-          // defaultValue={!isSPE ? data?.data?.stock : ""}
           {...register("stock", { required: formMode === "add" })}
         />
         <p className="text-red-500">
@@ -202,7 +220,6 @@ export default function ProductForm() {
         <input
           type="number"
           className="py-2 border rounded-md px-2"
-          // defaultValue={!isSPE ? data?.data?.price : ""}
           {...register("price", { required: formMode === "add" })}
         />
         <p className="text-red-500">
