@@ -75,7 +75,7 @@ export default function ProductForm() {
       // imgbb api key
       axios
         .post(
-          `https://api.imgbb.com/1/upload?key=${process.env.REACT_APP_ImgBBapiKey}`,
+          `https://api.imgbb.com/1/upload?key=787a92272c8fe84458fd69331f72c734`,
           data,
           {
             headers: { "content-Type": "multipart/form-data" },
