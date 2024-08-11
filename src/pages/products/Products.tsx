@@ -90,7 +90,7 @@ const Products = () => {
       <div className="products container mx-auto px-3 py-8">
         <h2 className="font-bold text-3xl mb-5">Our Products</h2>
         {/* search filter row */}
-        <div className="search_filter flex items-center gap-4 mb-4">
+        <div className="search_filter flex flex-wrap items-center gap-4 mb-4">
           <button
             onClick={showFilterModal}
             className="btn btn-accent text-white"

@@ -90,10 +90,10 @@ const Cart = () => {
         {isError && <p>{(error as CustomError)?.data?.message}</p>}
 
         {cartItems?.length > 0 && (
-          <div className="cart_price grid grid-cols-3 gap-8 items-start">
+          <div className="cart_price grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
             {/* cart products */}
-            <div className="cart_products col-span-2 w-full">
-              <table className="w-full">
+            <div className="cart_products overflow-auto col-span-2 w-full">
+              <table className="w-full min-w-[500px]">
                 <tr>
                   <th className="border py-2">Items</th>
                   <th className="border py-2">Price</th>

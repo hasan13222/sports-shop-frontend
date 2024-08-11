@@ -85,11 +85,15 @@ const ManageProducts = () => {
         </Modal>
 
         {/* products table */}
+        <div className="overflow-auto">
         <Table
+          style={{minWidth: '750px'}}
           columns={columns}
           dataSource={products?.data?.result}
           rowKey={(record) => record._id}
         />
+        </div>
+        
       </div>
     </>
   );

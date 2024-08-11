@@ -1,5 +1,5 @@
 import { Layout, Spin } from "antd";
-// import Product from "../../components/ui/Product";
+import { FaBars } from "react-icons/fa";
 import Slider from "../../components/ui/Slider";
 import { useGetProductsQuery } from "../../redux/features/product/productApi";
 import Product from "../../components/ui/Product";
@@ -10,9 +10,11 @@ import { categories } from "../../constants/categories";
 import { useAppDispatch } from "../../redux/hooks";
 import { setCategory } from "../../redux/features/product/productQuerySlice";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 
 const { Header } = Layout;
 const Home = () => {
+  const [showCategories, setShowCategories] = useState(false);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const { data, isLoading, isFetching, isError, error } = useGetProductsQuery({
@@ -21,7 +23,7 @@ const Home = () => {
 
   const categoryHandler = (category: string) => {
     dispatch(setCategory(category));
-    navigate('/products')
+    navigate("/products");
   };
   return (
     <>
@@ -35,7 +37,20 @@ const Home = () => {
           boxShadow: "0 2px 3px 1px #e2e3e2",
         }}
       >
-        <div className="categories">
+        <div className="mobile_categories block lg:hidden relative">
+          <button className="flex items-center gap-1" onClick={() => setShowCategories(!showCategories)}>
+            <FaBars />
+            <span>Categories</span>
+          </button>
+          <ul className={`${showCategories ? "block" : "hidden"} absolute top-14 rounded-md bg-black w-[250px] z-10`}>
+          {categories.map((category, i) => (
+            <li className="cursor-pointer hover:bg-white hover:text-black pl-4" onClick={() => categoryHandler(category)} key={`category${i}`}>
+              {category}
+            </li>
+          ))}
+          </ul>
+        </div>
+        <div className="categories hidden lg:flex">
           {categories.map((category, i) => (
             <div
               key={i}
