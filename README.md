@@ -4,11 +4,14 @@
 
 ### Features
 
-- User can see Feature products in the homepage
-- User can add new product from manage prouducts route
-- User can edit and delete added products from manage products route
-- User can search, filter and sort products
-- User can add product to cart and place order cart products
+- Comprehensive e-commerce website for your sporting goods business, offering a wide range of equipment and accessories for various sports
+-  Search functionality for users to find specific products based on name Filter functionality for users to find specific products based on sport category, price, brand, rating etc.
+-  Sorting options (ascending and descending by price).
+-  Allows adding the product to the cart.
+-  Implement functionalities to increase/decrease quantity and to remove items from the cart for each products.
+-  A section that will show the total price including 15% vat for the overall purchase.
+-  Allows the user to place an order. * If the product is in stock, this button will be activated. If the product is out of stock, the button will be deactivated. Clicking this button will take the user to the checkout page.
+-  User can add a product, delete a product and update a product using RTK Query.
 
 ### Technology used
 
